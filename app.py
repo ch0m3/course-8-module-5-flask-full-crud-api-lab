@@ -27,7 +27,7 @@ def create_event():
 
 
 # Update the title of an existing event
-@app.route("/events<int:event_id>", methods=["PATCH"])
+@app.route("/events/<int:event_id>", methods=["PATCH"])
 def update_event(event_id):
     data = request.get_json()
     for event in events:
@@ -38,16 +38,19 @@ def update_event(event_id):
 
 
 # Remove an event from the list
-@app.route("/events<int:event_id>", methods=["DELETE"])
+@app.route("/events/<int:event_id>", methods=["DELETE"])
 def delete_event(event_id):
-   
     global events
+    
+    event_exists = any(event.id == event_id for event in events)
+    if not event_exists:
+        return jsonify ({"error": "Event not found"}),404
     events = [event for event in events if event.id != event_id]
-    return jsonify({"message": "Event deleted"}), 204
+    return "", 204
 
 
 #get an event by id
-@app.route("/events<int:event_id>", methods=["GET"])
+@app.route("/events/<int:event_id>", methods=["GET"])
 def get_event(event_id):
     for event in events:
         if event.id == event_id:
