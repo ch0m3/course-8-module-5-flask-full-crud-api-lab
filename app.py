@@ -33,7 +33,7 @@ def update_event(event_id):
     for event in events:
         if event.id == event_id:
             event.title = data["title"]
-            return jsonify(event.to_dict())
+            return jsonify(event.to_dict()), 200
     return jsonify({"error": "Event not found"}), 404
 
 
@@ -43,7 +43,7 @@ def delete_event(event_id):
    
     global events
     events = [event for event in events if event.id != event_id]
-    return jsonify({"message": "Event deleted"})
+    return jsonify({"message": "Event deleted"}), 204
 
 
 #get an event by id
